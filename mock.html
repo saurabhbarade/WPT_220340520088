@@ -1,0 +1,79 @@
+<html>
+<body>
+
+Book id :<input type="number" name="" id="bookid" placeholder="Enter book id here...">
+<span id="message">what happened book added or not</span> <br>
+<br> Book Name :<input type="text" name="" id="bookname" placeholder="Enter book name here..."><br><br>
+Price : <input type="number" name="" id="price" placeholder="Enter price here..."><br><br>
+<button id="btn">Update Book</button> 
+
+</body>
+
+<script src="jquery-3.5.1.min.js"></script>
+<script>//our scrip will come here 
+
+
+
+$(document).ready(function()
+{
+
+$("#bookid").blur(function () 
+	{ 
+		let bookid={bookid:$("#bookid").val()}
+		let datatoserver={
+			data:bookid,
+			url:"http://localhost:8081/poc1",
+			type:'get',
+			datatype:"json",
+			success:(data1)=>{
+				if(data1.bookfoundstatus){
+					$("#message").text('bookid id found');
+					$("#bookname").val(data1.bookdetails.bookname);
+					$("#price").val(data1.bookdetails.price);
+				}
+				else{
+					$("#message").text('bookid id not found');
+					$("#bookname").val(data1.bookdetails.bookname);
+					$("#price").val(data1.bookdetails.price);
+
+				}
+			},
+			error:(data1)=>{console.log("error"+data1)}
+
+		}
+		$.ajax(datatoserver);
+	});
+	
+
+
+$("#btn").click(function () 
+	{ 
+		let input={bookid:$("#bookid").val(),bookname:$("#bookname").val(),price:$("#price").val()}
+		let datatoserver={
+			data:input,
+			url:"http://localhost:8081/poc2",
+			type:'get',
+			datatype:"json",
+			success:(data1)=>{
+				if(data1){
+				$("#message").text("updated successfully!!");
+				}
+				else{
+					$("#message").text('Not able to update');
+					
+				}
+			},
+			error:(data1)=>{console.log("error"+data1)}
+
+		}
+		$.ajax(datatoserver);
+	});
+	
+});
+
+
+
+</script>
+
+
+</html>
